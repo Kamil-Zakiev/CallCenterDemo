@@ -19,7 +19,7 @@ namespace Web.Models.Requests
         /// </summary>
         [Display(Name = "Телефон пользователя")]
         [Required]
-        // todo: [RegularExpression("[0-9]*")]
+        [RegularExpression("[0-9]*", ErrorMessage = "Телефонный номер должен состоять из цифр")]
         public string PhoneNumber { get; set; }
 
         /// <summary>

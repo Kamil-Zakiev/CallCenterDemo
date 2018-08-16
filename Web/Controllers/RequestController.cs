@@ -9,11 +9,22 @@ namespace Web.Controllers
 {
     public class RequestController : Controller
     {
-        // GET: Request
         [HttpGet]
         public ActionResult Create()
         {
             return View(new NewRequestFormDto());
         }
+
+       [HttpPost]
+        public ActionResult Create(NewRequestFormDto requestFormDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(requestFormDto);
+            }
+            return Content("ok");
+        }
+
+
     }
 }

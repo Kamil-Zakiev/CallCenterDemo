@@ -32,3 +32,19 @@ textarea {
     margin-top: 5px;
     font-weight: bold;
 }
+
+.input-validation-error 
+{
+    background-color: pink;
+    font-family: monospace;
+}
+
+.field-validation-error 
+{
+    color: red;
+    font-weight: bold;
+}
+
+.editor-label label {
+    margin-top: 10px;
+}
