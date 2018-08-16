@@ -20,5 +20,15 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    width: 350px;
+    max-width: 480px;
+}
+
+.form-request-button {
+    width: 350px;
+    background-color: tomato;
+    color: white;
+    height: 30px;
+    margin-top: 5px;
+    font-weight: bold;
 }

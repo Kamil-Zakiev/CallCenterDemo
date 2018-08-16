@@ -1,0 +1,13 @@
+﻿@model Web.Models.Requests.NewRequestFormDto
+@{
+    ViewBag.Title = "Новая заявка";
+}
+
+<h2>Оформление новой заявки</h2>
+
+@using(Html.BeginForm())
+{
+    @Html.EditorForModel()
+    <button type="submit" class="form-request-button">Оформить заявку</button>
+}
+
