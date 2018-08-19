@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{AB737202-CF79-4C46-B842-F295759D6112}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{55BD8839-FC93-49F5-AD74-2694AFF04778}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernateConfigs", "NHibernateConfigs\NHibernateConfigs.csproj", "{285562FD-1120-4684-86B4-075A0E05EAEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{AB737202-CF79-4C46-B842-F295759D6112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB737202-CF79-4C46-B842-F295759D6112}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB737202-CF79-4C46-B842-F295759D6112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55BD8839-FC93-49F5-AD74-2694AFF04778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BD8839-FC93-49F5-AD74-2694AFF04778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55BD8839-FC93-49F5-AD74-2694AFF04778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55BD8839-FC93-49F5-AD74-2694AFF04778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{285562FD-1120-4684-86B4-075A0E05EAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285562FD-1120-4684-86B4-075A0E05EAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285562FD-1120-4684-86B4-075A0E05EAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285562FD-1120-4684-86B4-075A0E05EAEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

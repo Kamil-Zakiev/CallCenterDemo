@@ -3,3 +3,5 @@ packages/*
 *.dll
 Web/bin/*
 Web/obj/*
+*/bin/*
+*/obj/*
