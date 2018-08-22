@@ -172,13 +172,21 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Requests\NewRequestFormDto.cs" />
+    <Compile Include="Models\Requests\RequestListDto.cs" />
+    <Compile Include="Models\Users\NewUserDto.cs" />
+    <Compile Include="Models\Users\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CurrentOperatorService.cs" />
+    <Compile Include="Services\RequestCreationService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -219,6 +227,12 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Request\Create.cshtml" />
+    <Content Include="Views\Request\ViewAll.cshtml" />
+    <Content Include="Views\User\AddNew.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />
+    <Content Include="Views\User\ViewAll.cshtml" />
+    <Content Include="Views\Request\ChooseRequestCategory.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -232,6 +246,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{55BD8839-FC93-49F5-AD74-2694AFF04778}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NHibernateConfigs\NHibernateConfigs.csproj">
       <Project>{285562FD-1120-4684-86B4-075A0E05EAEC}</Project>
       <Name>NHibernateConfigs</Name>

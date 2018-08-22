@@ -10,7 +10,7 @@ namespace NHibernateConfigs.Maps
     {
         protected PersistingObjectMap()
         {
-            Table(typeof(T).Name.ToLower());
+            Table($"kz_{typeof(T).Name.ToLower()}");
             Id(po => po.Id, m =>
             {
                 m.Column("id");

@@ -3,6 +3,7 @@ using System.Linq;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
+using NHibernate.Driver;
 using NHibernate.Mapping.ByCode;
 using NHibernateConfigs.Maps;
 
@@ -37,6 +38,7 @@ namespace NHibernateConfigs
             cfg.DataBaseIntegration(d =>
             {
                 d.Dialect<PostgreSQLDialect>();
+                d.Driver<NpgsqlDriver>();
                 d.ConnectionString = connectionString;
                 d.LogSqlInConsole = true;
             });

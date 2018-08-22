@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Web.Models.Requests
 {
@@ -26,8 +27,12 @@ namespace Web.Models.Requests
         ///     Наименование категории
         /// </summary>
         [Display(Name = "Наименование категории")]
-        [Required]
+        [HiddenInput]
         public string CategoryName { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+
+        public long CategoryId { get; set; }
 
         /// <summary>
         ///     Комментарий к заявке

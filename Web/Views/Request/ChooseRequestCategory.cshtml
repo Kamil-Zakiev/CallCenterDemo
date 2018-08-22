@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Domain.Entities.Category>
+
+@{
+    ViewBag.Title = "Выбор категории заявки";
+}
+
+<h2>Выбор категории заявки</h2>
+
+<p>
+    @Html.ActionLink("Добавить новую категорию", "Create", new
+    {
+        controller = "Category",
+        returnUrl = Request.RawUrl
+    })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Категория
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var category in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(category.Name, "Create", new { categoryId = category.Id })
+        </td>
+    </tr>
+}
+
+</table>

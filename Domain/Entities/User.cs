@@ -4,7 +4,7 @@ namespace Domain.Entities
 {
     public class User : PersistingObject
     {
-        public virtual long Login { get; set; }
+        public virtual string Login { get; set; }
 
         public virtual string PasswordHash { get; set; }
 
