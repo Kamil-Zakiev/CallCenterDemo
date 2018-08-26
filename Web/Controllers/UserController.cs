@@ -1,10 +1,12 @@
 ﻿using System.Web.Mvc;
 using Domain.Enums;
+using Web.Autentications.Attributes;
 using Web.Models.Users;
 using Web.Services;
 
 namespace Web.Controllers
 {
+    [AdminOnly]
     public class UserController : Controller
     {
         [HttpGet]
@@ -31,7 +33,6 @@ namespace Web.Controllers
             
             return View(newUserDto);
         }
-
 
         public ActionResult ViewAll()
         {

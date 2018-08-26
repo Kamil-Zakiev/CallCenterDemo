@@ -2,9 +2,11 @@
 using Domain.Entities;
 using NHibernateConfigs;
 using System.Linq;
+using Web.Autentications.Attributes;
 
 namespace Web.Controllers
 {
+    [OperatorOnly]
     public class CategoryController : Controller
     {
         [HttpGet]

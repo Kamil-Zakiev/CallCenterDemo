@@ -172,8 +172,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Autentications\Attributes\CustomAuthorizeFilterAttribute.cs" />
+    <Compile Include="Autentications\AuthHttpModule.cs" />
+    <Compile Include="Autentications\CustomAutentication.cs" />
+    <Compile Include="Autentications\UserIndentity.cs" />
+    <Compile Include="Autentications\UserProvider.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LoginPasswordDto.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -185,6 +192,7 @@
     <Compile Include="Models\Users\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CurrentOperatorService.cs" />
+    <Compile Include="Services\PasswordHashService.cs" />
     <Compile Include="Services\RequestCreationService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
@@ -212,7 +220,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -233,6 +243,9 @@
     <Content Include="Views\User\ViewAll.cshtml" />
     <Content Include="Views\Request\ChooseRequestCategory.cshtml" />
     <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Home\AccessDenied.cshtml" />
+    <Content Include="Views\Home\PageNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

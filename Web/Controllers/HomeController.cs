@@ -20,10 +20,13 @@ namespace Web.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult AccessDenied()
         {
-            ViewBag.Message = "Your contact page.";
+            return View();
+        }
 
+        public ActionResult PageNotFound()
+        {
             return View();
         }
     }

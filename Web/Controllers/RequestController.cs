@@ -1,12 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Domain.Entities;
 using NHibernateConfigs;
+using Web.Autentications.Attributes;
 using Web.Models.Requests;
 using Web.Services;
 
 namespace Web.Controllers
 {
+    [OperatorOnly]
     public class RequestController : Controller
     {
         [HttpGet]
@@ -20,7 +23,7 @@ namespace Web.Controllers
             }
 
             var cat = catDataStore.Get(categoryId.Value);
-            return View(new NewRequestFormDto()
+            return View(new NewRequestFormDto
             {
                 CategoryId = cat.Id,
                 CategoryName = cat.Name
@@ -43,7 +46,7 @@ namespace Web.Controllers
                 action = "ViewAll"
             }));
         }
-        
+
         public ActionResult ViewAll()
         {
             var reqDataStore = new DataStore<Request>();
@@ -53,14 +56,15 @@ namespace Web.Controllers
                     Id = req.Id,
                     CategoryName = req.Category.Name,
                     CustemerFio = req.ConsumerName
-                }).ToArray();
+                })
+                .ToArray();
 
             return View(reqs);
         }
 
         public ActionResult Edit(long id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -56,3 +56,9 @@ div .roles-list
     width: 8em;
     padding: .3em;
 }
+
+div .checkbox input 
+{
+    height: 15px;
+    width: 15px;    
+}
