@@ -16,5 +16,7 @@ namespace Web.Models.Users
         [Display(Name = "Роль")]
         [UIHint("Enum")]
         public ERole Role { get; set; }
+
+        public bool Blocked { get; set; }
     }
 }

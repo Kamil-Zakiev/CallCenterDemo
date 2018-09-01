@@ -1,27 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Domain.Entities;
 using NHibernateConfigs;
+using Web.Exceptions;
 using Web.Models.Users;
 
 namespace Web.Services
 {
+    public class CreateUserResult
+    {
+        public bool Success { get; set; }
+
+        public string Message { get; set; }
+    }
+
+
     public class UserService
     {
-        public void CreateNewUser(NewUserDto newUserDto)
+        public CreateUserResult CreateNewUser(NewUserDto newUserDto)
         {
             // todo: добавить валидацию логина
-            var user = new User()
+
+            var userDs = new DataStore<User>();
+
+            var isLoginUsed = userDs.GetAll().Any(u => u.Login == newUserDto.Login);
+
+            if (isLoginUsed)
+            {
+                return new CreateUserResult()
+                {
+                    Success = false,
+                    Message = "Логин занят"
+                };
+            }
+
+            var user = new User
             {
                 Login = newUserDto.Login,
                 Name = newUserDto.Name,
                 PasswordHash = string.Empty,
                 Role = newUserDto.Role
             };
-            
+
             new DataStore<User>().Save(user);
+
+            return new CreateUserResult
+            {
+                Success = true
+            };
         }
 
         public IReadOnlyList<UserDto> GetUsers()

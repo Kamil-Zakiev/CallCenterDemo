@@ -1,6 +1,13 @@
 ﻿@using Domain.Extensions
 @model IEnumerable<Web.Models.Users.UserDto>
-    
+
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h4>@TempData["Message"]</h4>
 <table class="table">
 <tr>
     <th>
@@ -15,20 +22,28 @@
     <th></th>
 </tr>
 
-@foreach (var item in Model) {
+@foreach (var userDto in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => userDto.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Login)
+            @Html.DisplayFor(modelItem => userDto.Login)
         </td>
         <td>
-            @item.Role.GetDisplay()
+            @userDto.Role.GetDisplay()
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Сброс пароля", "DropPassword", new {id = userDto.Id}) |
+            
+            @if (userDto.Blocked)
+            {
+                @Html.ActionLink("Разблокировать", "Unblock", new { id = userDto.Id })
+            }
+            else
+            {
+                @Html.ActionLink("Заблокировать", "Block", new {id = userDto.Id})
+            }
         </td>
     </tr>
 }

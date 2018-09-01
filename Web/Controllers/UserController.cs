@@ -28,10 +28,15 @@ namespace Web.Controllers
             }
 
             var userService = new UserService();
-            userService.CreateNewUser(newUserDto);
+            var result = userService.CreateNewUser(newUserDto);
+            if (!result.Success)
+            {
+                ModelState.AddModelError(nameof(newUserDto.Login), result.Message);
+                return View(newUserDto);
+            }
+
             TempData["Message"] = "Пользователь успешно добавлен.";
-            
-            return View(newUserDto);
+            return RedirectToAction("ViewAll");
         }
 
         public ActionResult ViewAll()

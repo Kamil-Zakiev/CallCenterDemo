@@ -83,19 +83,6 @@ namespace Web.Autentications
             HttpContext.Response.Cookies.Set(authCookie);
         }
 
-        public object Login(string login)
-        {
-            var userDs = new DataStore<User>();
-            var user = userDs.GetAll().SingleOrDefault(u => u.Login == login);
-            
-            if (user != null)
-            {
-                CreateCookie(user);
-            }
-
-            return user;
-        }
-
         public void LogOut()
         {
             var httpCookie = HttpContext.Response.Cookies[CookieName];
@@ -104,7 +91,5 @@ namespace Web.Autentications
                 httpCookie.Value = string.Empty;
             }
         }
-
-
     }
 }

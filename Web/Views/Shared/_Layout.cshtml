@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+    <title>Незабудка - @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -23,7 +23,6 @@
                     <li>@Html.ActionLink("Оформить новую заявку", "Create", "Request")</li>
                     <li>@Html.ActionLink("Просмотреть свои заявки", "ViewAll", "Request")</li>
                     <li>@Html.ActionLink("Просмотреть все заявки", "ViewAll", "Request")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Добавить пользователя", "AddNew", "User")</li>
                     <li>@Html.ActionLink("Просмотр всех пользователей", "ViewAll", "User")</li>
                     <li>@Html.ActionLink("Выйти из системы", "LogOut", "Login")</li>
