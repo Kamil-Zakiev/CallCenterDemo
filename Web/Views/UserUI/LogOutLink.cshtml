@@ -1,0 +1,5 @@
+﻿@model string
+<div class="greetings">
+     Хорошего рабочего дня, @Model!
+</div>
+@Html.ActionLink("Выйти из системы", "LogOut", "Login", null, new { @class = "logout-link" })

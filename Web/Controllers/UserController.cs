@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Domain.Enums;
+using Web.Autentications;
 using Web.Autentications.Attributes;
 using Web.Models.Users;
 using Web.Services;
@@ -17,7 +18,7 @@ namespace Web.Controllers
                 Role = ERole.Operator
             });
         }
-
+        
         [HttpPost]
         public ActionResult AddNew(NewUserDto newUserDto)
         {

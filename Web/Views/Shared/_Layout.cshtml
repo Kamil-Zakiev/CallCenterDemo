@@ -8,37 +8,27 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <div >
                 @Html.ActionLink("Call center Незабудка", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+                @{ Html.RenderAction("GetLogInOutLink", "UserUI");}
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Оформить новую заявку", "Create", "Request")</li>
-                    <li>@Html.ActionLink("Просмотреть свои заявки", "ViewAll", "Request")</li>
-                    <li>@Html.ActionLink("Просмотреть все заявки", "ViewAll", "Request")</li>
-                    <li>@Html.ActionLink("Добавить пользователя", "AddNew", "User")</li>
-                    <li>@Html.ActionLink("Просмотр всех пользователей", "ViewAll", "User")</li>
-                    <li>@Html.ActionLink("Выйти из системы", "LogOut", "Login")</li>
-                </ul>
+            <div>
+                @{ Html.RenderAction("GetPanel", "UserUI");}
             </div>
         </div>
     </div>
-<div class="container body-content">
-    <div>
-    @RenderBody()
-        </div>
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - Call center Незабудка</p>
-    </footer>
-</div>
+    <div class="container body-content">
+        <div>
+        @RenderBody()
+            </div>
+        <hr/>
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Call center Незабудка</p>
+        </footer>
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

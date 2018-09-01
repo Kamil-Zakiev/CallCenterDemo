@@ -1,5 +1,4 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
 }
 
@@ -61,4 +60,30 @@ div .checkbox input
 {
     height: 15px;
     width: 15px;    
+}
+
+div #left, #right {
+    display: inline-block;
+}
+
+#left {width: 65%; }
+
+.main-image
+{
+    height: 200px;
+    width: 200px;
+}
+
+.logout-link 
+{
+    color: #999999;
+    float: right;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.greetings {
+    font-weight: bold;
+    color: azure;
+    float: left;
 }
