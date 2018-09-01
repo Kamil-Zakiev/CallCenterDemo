@@ -1,15 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using Domain;
 using Domain.Entities;
-using NHibernateConfigs;
+using Domain.Interfaces.Users;
 using Web.Autentications;
-using Web.Services;
 
 namespace Web.Controllers
 {
     public class LoginController : Controller
     {
+        public IDataStore<User> UserDataStore { get; set; }
+
+        public IPasswordHashService PasswordHashService { get; set; }
+
+        public CustomAutentication CustomAutentication { get; set; }
+        
         [HttpGet]
         public ActionResult Index()
         {
@@ -24,8 +31,8 @@ namespace Web.Controllers
             {
                 return View(loginPasswordDto);
             }
-            
-            var authedUser = AuthHttpModule.BadDesicionAutentication.Login(loginPasswordDto);
+
+            var authedUser = CustomAutentication.Login(loginPasswordDto);
             if (authedUser == null)
             {
                 ModelState.AddModelError("",
@@ -40,10 +47,10 @@ namespace Web.Controllers
 
         public ActionResult LogOut()
         {
-            AuthHttpModule.BadDesicionAutentication.LogOut();
+            CustomAutentication.LogOut();
             return Redirect(Url.RouteUrl(new {controller = "Home", action = "Index"}));
         }
-        
+
         public ActionResult Register()
         {
             return View(new RegisterDto());
@@ -64,16 +71,17 @@ namespace Web.Controllers
                 return View(registerDto);
             }
 
-            var userDs = new DataStore<User>();
-            var existedUser = userDs.GetAll().SingleOrDefault(user => user.Login == registerDto.Login && user.PasswordHash == string.Empty);
+            var existedUser = UserDataStore.GetAll()
+                .SingleOrDefault(user => user.Login == registerDto.Login && user.PasswordHash == string.Empty);
             if (existedUser == null)
             {
-                ModelState.AddModelError(nameof(registerDto.Login), "Данный логин недоступен, обратитесь к администратору");
+                ModelState.AddModelError(nameof(registerDto.Login),
+                    "Данный логин недоступен, обратитесь к администратору");
                 return View(registerDto);
             }
 
-            existedUser.PasswordHash = new PasswordHashService().GetHash(registerDto.Password);
-            userDs.Update(existedUser);
+            existedUser.PasswordHash = PasswordHashService.GetHash(registerDto.Password);
+            UserDataStore.Update(existedUser);
 
             return RedirectToAction("Index");
         }

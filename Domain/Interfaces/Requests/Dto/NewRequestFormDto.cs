@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace Web.Models.Requests
+namespace Domain.Interfaces.Requests.Dto
 {
     /// <summary>
     ///     Форма добавления новой заявки
@@ -31,7 +31,6 @@ namespace Web.Models.Requests
         public string CategoryName { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-
         public long CategoryId { get; set; }
 
         /// <summary>
@@ -41,5 +40,8 @@ namespace Web.Models.Requests
         [Required]
         [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public long AuthorId { get; set; }
     }
 }

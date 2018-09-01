@@ -46,6 +46,7 @@ namespace NHibernateConfigs
             var modelMapper = new ModelMapper();
             var mapClasses = AppDomain.CurrentDomain
                 .GetAssemblies()
+                .Where(assem => !assem.IsDynamic)
                 .SelectMany(assem => assem.GetExportedTypes())
                 .Where(type => type.BaseType != null && type.BaseType.IsGenericType)
                 .Where(type => typeof(PersistingObjectMap<>) == type.BaseType.GetGenericTypeDefinition())

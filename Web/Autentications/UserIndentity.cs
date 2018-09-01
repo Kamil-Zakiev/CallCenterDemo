@@ -11,7 +11,7 @@ namespace Web.Autentications
 
         public string Name => User?.Login;
 
-        public string AuthenticationType => "Custom";
+        public string AuthenticationType => "Forms";
 
         public bool IsAuthenticated => User != null;
 

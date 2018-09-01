@@ -9,6 +9,7 @@ namespace Web.Autentications.Attributes
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            // todo: container resolve
             var userPrincipal = filterContext.Controller.ControllerContext.HttpContext.User;
             var isInRole = userPrincipal.IsInRole(Role.ToString());
             if (!isInRole)

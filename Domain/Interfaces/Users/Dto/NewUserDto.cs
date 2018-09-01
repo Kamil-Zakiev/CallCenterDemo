@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
 
-namespace Web.Models.Users
+namespace Domain.Interfaces.Users.Dto
 {
+    // todo: move to Web
     public class NewUserDto
     {
         [Display(Name = "Имя пользователя")]

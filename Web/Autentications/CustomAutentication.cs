@@ -3,15 +3,20 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
+using Domain;
 using Domain.Entities;
+using Domain.Interfaces.Users;
 using NHibernateConfigs;
 using Web.Controllers;
-using Web.Services;
 
 namespace Web.Autentications
 {
     public class CustomAutentication
     {
+        public IPasswordHashService PasswordHashService { get; set; }
+
+        public IDataStore<User> UserDataStore { get; set; }
+        
         private const string CookieName = "__AUTH_COOKIE";
 
         public HttpContext HttpContext { get; set; }
@@ -46,13 +51,10 @@ namespace Web.Autentications
             }
         }
 
-        public object Login(LoginPasswordDto loginPasswordDto)
+        public User Login(LoginPasswordDto loginPasswordDto)
         {
-            var userDs = new DataStore<User>();
-
-            var hashService = new PasswordHashService();
-            var passHash = hashService.GetHash(loginPasswordDto.Password);
-            var user = userDs.GetAll().SingleOrDefault(u => u.Login == loginPasswordDto.Login && u.PasswordHash == passHash);
+            var passHash = PasswordHashService.GetHash(loginPasswordDto.Password);
+            var user = UserDataStore.GetAll().SingleOrDefault(u => u.Login == loginPasswordDto.Login && u.PasswordHash == passHash);
 
             if (user != null)
             {

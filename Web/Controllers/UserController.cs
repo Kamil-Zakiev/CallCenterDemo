@@ -1,15 +1,16 @@
 ﻿using System.Web.Mvc;
 using Domain.Enums;
-using Web.Autentications;
+using Domain.Interfaces.Users;
+using Domain.Interfaces.Users.Dto;
 using Web.Autentications.Attributes;
-using Web.Models.Users;
-using Web.Services;
 
 namespace Web.Controllers
 {
     [AdminOnly]
     public class UserController : Controller
     {
+        public IUserService UserService { get; set; }
+
         [HttpGet]
         public ActionResult AddNew()
         {
@@ -27,9 +28,8 @@ namespace Web.Controllers
                 ModelState.AddModelError("", "Введены некорректные данные");
                 return View(newUserDto);
             }
-
-            var userService = new UserService();
-            var result = userService.CreateNewUser(newUserDto);
+            
+            var result = UserService.CreateNewUser(newUserDto);
             if (!result.Success)
             {
                 ModelState.AddModelError(nameof(newUserDto.Login), result.Message);
@@ -42,9 +42,7 @@ namespace Web.Controllers
 
         public ActionResult ViewAll()
         {
-            var userService = new UserService();
-            var users = userService.GetUsers();
-            return View(users);
+            return View(UserService.GetUsers());
         }
     }
 }

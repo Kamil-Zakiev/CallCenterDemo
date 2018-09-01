@@ -1,16 +1,18 @@
 ﻿using System.Linq;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Interfaces.Users;
 using NHibernateConfigs;
 
-namespace Web.Services
+namespace Domain.Services.Services
 {
-    public class CurrentOperatorService
+    public class CurrentOperatorService : ICurrentOperatorService
     {
+        public IDataStore<User> UserDataStore { get; set; }
+
         public User GetCurrentUser()
         {
-            var userDataStore = new DataStore<User>();
-            var firstUser = userDataStore.GetAll().FirstOrDefault();
+            var firstUser = UserDataStore.GetAll().FirstOrDefault();
             if (firstUser == null)
             {
                 firstUser = new User()
@@ -20,8 +22,9 @@ namespace Web.Services
                     PasswordHash = "123",
                     Role = ERole.Admin
                 };
-                userDataStore.Save(firstUser);
+                UserDataStore.Save(firstUser);
             }
+
             return firstUser;
         }
     }

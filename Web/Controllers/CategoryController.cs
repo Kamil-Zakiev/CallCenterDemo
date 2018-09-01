@@ -14,8 +14,6 @@ namespace Web.Controllers
         {
             ViewBag.returnUrl = returnUrl;
             return View(new Category());
-
-            //return Redirect(returnUrl);
         }
 
         [HttpPost]

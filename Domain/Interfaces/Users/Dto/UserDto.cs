@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
 
-namespace Web.Models.Users
+namespace Domain.Interfaces.Users.Dto
 {
+    // todo: вынести в модуль Web
     public class UserDto
     {
         public long Id { get; set; }
@@ -14,7 +15,7 @@ namespace Web.Models.Users
         public string Login { get; set; }
 
         [Display(Name = "Роль")]
-        [UIHint("Enum")]
+        [System.ComponentModel.DataAnnotations.UIHint("Enum")]
         public ERole Role { get; set; }
 
         public bool Blocked { get; set; }

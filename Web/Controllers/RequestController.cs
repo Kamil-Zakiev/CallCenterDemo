@@ -1,32 +1,41 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Domain;
 using Domain.Entities;
-using NHibernateConfigs;
+using Domain.Interfaces.Requests;
+using Domain.Interfaces.Requests.Dto;
+using Web.Autentications;
 using Web.Autentications.Attributes;
 using Web.Models.Requests;
-using Web.Services;
 
 namespace Web.Controllers
 {
     [OperatorOnly]
     public class RequestController : Controller
     {
+        public IDataStore<Category> CategoryDataStore { get; set; }
+
+        public IDataStore<Request> RequestDataStore { get; set; }
+
+        public IRequestCreationService RequestCreationService { get; set; }
+
         [HttpGet]
         public ActionResult Create(long? categoryId)
         {
-            var catDataStore = new DataStore<Category>();
             if (!categoryId.HasValue)
             {
-                var categories = catDataStore.GetAll().ToArray();
+                var categories = CategoryDataStore.GetAll().ToArray();
                 return View("ChooseRequestCategory", categories);
             }
 
-            var cat = catDataStore.Get(categoryId.Value);
+            var cat = CategoryDataStore.Get(categoryId.Value);
             return View(new NewRequestFormDto
             {
                 CategoryId = cat.Id,
-                CategoryName = cat.Name
+                CategoryName = cat.Name,
+                // todo wtf
+                AuthorId = ((UserIndentity)((UserProvider)User).Identity).User.Id
             });
         }
 
@@ -38,8 +47,7 @@ namespace Web.Controllers
                 return View(requestFormDto);
             }
 
-            var requestCreationService = new RequestCreationService();
-            requestCreationService.Create(requestFormDto);
+            RequestCreationService.Create(requestFormDto);
 
             return Redirect(Url.RouteUrl(new
             {
@@ -49,8 +57,8 @@ namespace Web.Controllers
 
         public ActionResult ViewAll()
         {
-            var reqDataStore = new DataStore<Request>();
-            var reqs = reqDataStore.GetAll()
+            // todo: automapper
+            var reqs = RequestDataStore.GetAll()
                 .Select(req => new RequestListDto
                 {
                     Id = req.Id,

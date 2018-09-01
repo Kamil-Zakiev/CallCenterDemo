@@ -3,6 +3,7 @@ using Web.Autentications;
 
 namespace Web.Controllers
 {
+    // ReSharper disable once InconsistentNaming
     public class UserUIController : Controller
     {
         public ActionResult GetPanel()
