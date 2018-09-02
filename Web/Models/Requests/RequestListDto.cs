@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.HtmlControls;
+using Web.Controllers;
 using Web.Models.Common;
 
 namespace Web.Models.Requests
@@ -16,7 +17,7 @@ namespace Web.Models.Requests
         [HiddenInput(DisplayValue = false)]
         public PagesInfo PagesInfo { get; set; }
 
-        public string CategoryFilter { get; set; }
+        public UserLoadParams UserLoadParams { get; set; }
     }
 
     public class RequestListItem

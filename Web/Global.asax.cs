@@ -15,6 +15,7 @@ using NHibernateConfigs;
 using Web.Autentications;
 using Web.Controllers;
 using Web.Infrastructure;
+using Web.Infrastructure.ModelBinders;
 
 namespace Web
 {
@@ -28,6 +29,8 @@ namespace Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ModelBinders.Binders.Add(typeof(UserLoadParams), new UserLoadParamsBinder());
 
             InitIoC();
 

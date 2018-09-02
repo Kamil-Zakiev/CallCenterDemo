@@ -15,13 +15,14 @@ namespace Web
             
             routes.MapRoute(
                 name: null,
-                url: "{controller}/{action}/Page{page}"
+                url: "{controller}/{action}/Page{page}",
+                defaults: new { page = 1 }
             );
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{page}",
+                defaults: new { controller = "Home", action = "Index", page = 1 }
             );
         }
     }

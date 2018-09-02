@@ -193,6 +193,8 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserUIController.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
+    <Compile Include="Extensions\QuerableExtensions.cs" />
+    <Compile Include="Infrastructure\ModelBinders\UserLoadParamsBinder.cs" />
     <Compile Include="Infrastructure\WindsorControllerFactory.cs" />
     <Compile Include="Models\Logins\LoginPasswordDto.cs" />
     <Compile Include="Controllers\RequestController.cs" />

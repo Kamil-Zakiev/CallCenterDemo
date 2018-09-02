@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using Domain;
 using Domain.Entities;
@@ -8,7 +10,9 @@ using Domain.Interfaces.Requests.Dto;
 using Web.Autentications;
 using Web.Autentications.Attributes;
 using Web.Models.Common;
+using Web.Extensions;
 using Web.Models.Requests;
+
 
 namespace Web.Controllers
 {
@@ -56,37 +60,29 @@ namespace Web.Controllers
             }));
         }
 
-        public ActionResult ViewAll( string categoryFilter, int page = 1)
+        public ActionResult ViewAll(UserLoadParams userLoadParams)
         {
             // todo: automapper
-            var skipCount = (page - 1) * PagesInfo.DefaultPageSize;
             var query = RequestDataStore.GetAll()
                 .Select(req => new RequestListItem
                 {
                     Id = req.Id,
                     CategoryName = req.Category.Name,
                     CustemerFio = req.ConsumerName
-                });
-
-            // todo: move to expression trees
-            if (!string.IsNullOrWhiteSpace(categoryFilter))
-            {
-                query = query
-                    .Where(dto => dto.CategoryName.ToLower().Contains(categoryFilter));
-            }
+                })
+                .Filter(userLoadParams);
 
             var reqs = query
-                .Skip(skipCount)
-                .Take(PagesInfo.DefaultPageSize)
+                .Paging(userLoadParams)
                 .ToArray();
 
             var model = new RequestListDto
             {
                 RequestListItems = reqs,
-                CategoryFilter = categoryFilter,
-                PagesInfo = new PagesInfo()
+                UserLoadParams = userLoadParams,
+                PagesInfo = new PagesInfo
                 {
-                    CurrentPage = page,
+                    CurrentPage = userLoadParams.Page,
                     TotalRowsCount = query.Count()
                 }
             };
@@ -98,5 +94,12 @@ namespace Web.Controllers
         {
             throw new NotImplementedException();
         }
+    }
+
+    public class UserLoadParams
+    {
+        public int Page { get; set; } = 1;
+
+        public Dictionary<string, string> FilterParams { get; set; }
     }
 }

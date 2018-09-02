@@ -13,8 +13,12 @@
 <div>
     @using (Html.BeginForm(new {page = 1}))
     {
+
+        <!--todo: move to helper-->
         <label>Наименование категории</label>
-        <p>@Html.TextBox("categoryFilter", Model.CategoryFilter)</p>
+        string value;
+        Model.UserLoadParams.FilterParams.TryGetValue("filter.CategoryName", out value);
+        <p>@Html.TextBox("filter.CategoryName", value)</p>
 
         <button type="submit">Отфильтровать</button>
     }
@@ -56,14 +60,16 @@
 <div class ="page-links">
     @for (int i = 1; i <= totalPages; i++)
     {
-        @Html.ActionLink(i.ToString(), "ViewAll", 
-       new
-       {
-           page = i,
-           categoryFilter = Model.CategoryFilter
-       }, new
+        using (Html.BeginForm())
         {
-            @class = i == Model.PagesInfo.CurrentPage ? "selected" : null
-        })
+            <input hidden="true" name="page" value="@i"/>
+            foreach (var filterParam in Model.UserLoadParams.FilterParams)
+            {
+                <input hidden="true" name="@filterParam.Key" value="@filterParam.Value"/>
+            }
+
+            var cls = i == Model.PagesInfo.CurrentPage ? "selected" : null;
+            <button class="@cls" type="submit">@i</button>
+        }
     }
 </div>
