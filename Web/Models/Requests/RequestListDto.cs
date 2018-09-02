@@ -15,6 +15,8 @@ namespace Web.Models.Requests
         
         [HiddenInput(DisplayValue = false)]
         public PagesInfo PagesInfo { get; set; }
+
+        public string CategoryFilter { get; set; }
     }
 
     public class RequestListItem

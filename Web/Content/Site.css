@@ -91,7 +91,6 @@ div #left, #right {
 div .page-links 
 {
     text-align: right;
-    
 }
 
 div .page-links a {
@@ -108,5 +107,5 @@ div .page-links .selected {
     margin: 5px;
     font-weight: bold;
     color: black;
-    background: greenyellow
+    background: #c0c0c0
 }

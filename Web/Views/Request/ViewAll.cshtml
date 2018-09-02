@@ -10,6 +10,16 @@
 <p>
     @Html.ActionLink("Добавить новую", "Create")
 </p>
+<div>
+    @using (Html.BeginForm(new {page = 1}))
+    {
+        <label>Наименование категории</label>
+        <p>@Html.TextBox("categoryFilter", Model.CategoryFilter)</p>
+
+        <button type="submit">Отфильтровать</button>
+    }
+</div>
+
 <table class="table">
     <tr>
         <th>
@@ -38,6 +48,7 @@
 
 </table>
 
+<!--todo: move to helper-->
 @{
     var totalPages = Math.Ceiling((double)Model.PagesInfo.TotalRowsCount / PagesInfo.DefaultPageSize);
 }
@@ -45,10 +56,14 @@
 <div class ="page-links">
     @for (int i = 1; i <= totalPages; i++)
     {
-        @Html.ActionLink(i.ToString(), "ViewAll", new {page = i}, new
+        @Html.ActionLink(i.ToString(), "ViewAll", 
+       new
+       {
+           page = i,
+           categoryFilter = Model.CategoryFilter
+       }, new
         {
             @class = i == Model.PagesInfo.CurrentPage ? "selected" : null
         })
     }
 </div>
-

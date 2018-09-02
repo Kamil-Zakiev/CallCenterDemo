@@ -56,28 +56,38 @@ namespace Web.Controllers
             }));
         }
 
-        public ActionResult ViewAll(int page = 1)
+        public ActionResult ViewAll( string categoryFilter, int page = 1)
         {
             // todo: automapper
             var skipCount = (page - 1) * PagesInfo.DefaultPageSize;
-            var reqs = RequestDataStore.GetAll()
-                .Skip(skipCount)
-                .Take(PagesInfo.DefaultPageSize)
+            var query = RequestDataStore.GetAll()
                 .Select(req => new RequestListItem
                 {
                     Id = req.Id,
                     CategoryName = req.Category.Name,
                     CustemerFio = req.ConsumerName
-                })
+                });
+
+            // todo: move to expression trees
+            if (!string.IsNullOrWhiteSpace(categoryFilter))
+            {
+                query = query
+                    .Where(dto => dto.CategoryName.ToLower().Contains(categoryFilter));
+            }
+
+            var reqs = query
+                .Skip(skipCount)
+                .Take(PagesInfo.DefaultPageSize)
                 .ToArray();
 
             var model = new RequestListDto
             {
                 RequestListItems = reqs,
+                CategoryFilter = categoryFilter,
                 PagesInfo = new PagesInfo()
                 {
                     CurrentPage = page,
-                    TotalRowsCount = RequestDataStore.GetAll().Count()
+                    TotalRowsCount = query.Count()
                 }
             };
 
