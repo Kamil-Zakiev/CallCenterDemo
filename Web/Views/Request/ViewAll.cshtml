@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Web.Models.Requests.RequestListDto>
+﻿@using Web.Models.Common
+@model Web.Models.Requests.RequestListDto
 
 @{
     ViewBag.Title = "Заявки";
@@ -12,28 +13,42 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CustemerFio)
+            @Html.DisplayNameFor(model => model.RequestListItems.First().CustemerFio)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CategoryName)
+            @Html.DisplayNameFor(model => model.RequestListItems.First().CategoryName)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustemerFio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.RequestListItems) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustemerFio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+
+@{
+    var totalPages = Math.Ceiling((double)Model.PagesInfo.TotalRowsCount / PagesInfo.DefaultPageSize);
+}
+
+<div class ="page-links">
+    @for (int i = 1; i <= totalPages; i++)
+    {
+        @Html.ActionLink(i.ToString(), "ViewAll", new {page = i}, new
+        {
+            @class = i == Model.PagesInfo.CurrentPage ? "selected" : null
+        })
+    }
+</div>
+

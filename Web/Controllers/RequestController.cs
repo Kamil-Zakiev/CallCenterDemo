@@ -7,6 +7,7 @@ using Domain.Interfaces.Requests;
 using Domain.Interfaces.Requests.Dto;
 using Web.Autentications;
 using Web.Autentications.Attributes;
+using Web.Models.Common;
 using Web.Models.Requests;
 
 namespace Web.Controllers
@@ -55,11 +56,14 @@ namespace Web.Controllers
             }));
         }
 
-        public ActionResult ViewAll()
+        public ActionResult ViewAll(int page = 1)
         {
             // todo: automapper
+            var skipCount = (page - 1) * PagesInfo.DefaultPageSize;
             var reqs = RequestDataStore.GetAll()
-                .Select(req => new RequestListDto
+                .Skip(skipCount)
+                .Take(PagesInfo.DefaultPageSize)
+                .Select(req => new RequestListItem
                 {
                     Id = req.Id,
                     CategoryName = req.Category.Name,
@@ -67,7 +71,17 @@ namespace Web.Controllers
                 })
                 .ToArray();
 
-            return View(reqs);
+            var model = new RequestListDto
+            {
+                RequestListItems = reqs,
+                PagesInfo = new PagesInfo()
+                {
+                    CurrentPage = page,
+                    TotalRowsCount = RequestDataStore.GetAll().Count()
+                }
+            };
+
+            return View(model);
         }
 
         public ActionResult Edit(long id)

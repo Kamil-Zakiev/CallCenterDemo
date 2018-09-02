@@ -87,3 +87,26 @@ div #left, #right {
     color: azure;
     float: left;
 }
+
+div .page-links 
+{
+    text-align: right;
+    
+}
+
+div .page-links a {
+    padding: 5px;
+    margin: 5px;
+    font-weight: bold;
+    color: azure;
+    background: #080808;
+    font-size: 20px;
+}
+
+div .page-links .selected {
+    padding: 5px;
+    margin: 5px;
+    font-weight: bold;
+    color: black;
+    background: greenyellow
+}

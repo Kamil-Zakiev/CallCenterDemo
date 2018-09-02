@@ -12,6 +12,11 @@ namespace Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            
+            routes.MapRoute(
+                name: null,
+                url: "{controller}/{action}/Page{page}"
+            );
 
             routes.MapRoute(
                 name: "Default",

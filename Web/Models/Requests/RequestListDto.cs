@@ -3,10 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.UI.HtmlControls;
+using Web.Models.Common;
 
 namespace Web.Models.Requests
 {
     public class RequestListDto
+    {
+        public IReadOnlyList<RequestListItem> RequestListItems { get; set; }
+        
+        [HiddenInput(DisplayValue = false)]
+        public PagesInfo PagesInfo { get; set; }
+    }
+
+    public class RequestListItem
     {
         public long Id { get; set; }
 
