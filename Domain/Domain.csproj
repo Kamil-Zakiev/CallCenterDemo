@@ -79,6 +79,7 @@
     <Compile Include="Entities\WorkDescription.cs" />
     <Compile Include="Enums\EState.cs" />
     <Compile Include="Enums\ERole.cs" />
+    <Compile Include="Interfaces\Process\INextStateService.cs" />
     <Compile Include="Interfaces\Requests\Dto\NewRequestFormDto.cs" />
     <Compile Include="Interfaces\Requests\IRequestCreationService.cs" />
     <Compile Include="Interfaces\Users\Dto\CreateUserResult.cs" />

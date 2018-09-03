@@ -10,9 +10,11 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Core;
 using Domain;
+using Domain.Interfaces.Process;
 using Domain.Interfaces.Requests;
 using Domain.Interfaces.Users;
 using Domain.Services.Services;
+using Domain.Services.Services.Process;
 using NHibernateConfigs;
 using Web.Autentications;
 using Web.Controllers;
@@ -62,6 +64,8 @@ namespace Web
             Container.Register(Component.For<IUserService>().ImplementedBy<UserService>().LifestylePerWebRequest());
             Container.Register(Component.For<IPasswordHashService>().ImplementedBy<PasswordHashService>().LifestylePerWebRequest());
             Container.Register(Component.For(typeof(IDataStore<>)).ImplementedBy(typeof(DataStore<>)).LifestylePerWebRequest());
+            
+            Container.Register(Component.For<INextStateService>().ImplementedBy<NextStateService>());
         }
 
         protected void Application_AuthenticateRequest(object source, EventArgs e)

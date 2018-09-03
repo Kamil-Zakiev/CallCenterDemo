@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Domain;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Extensions;
 using Domain.Interfaces.Requests;
 using Domain.Interfaces.Requests.Dto;
 using Domain.Interfaces.Users;
@@ -106,10 +107,30 @@ namespace Web.Controllers
             return ListOfRequests(userLoadParams, reqQuery);
         }
 
-        [OperatorOnly]
+        [WorkerOnly]
         public ActionResult Edit(long id)
         {
             throw new NotImplementedException();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Details(long id)
+        {
+            var request = RequestDataStore.Get(id);
+
+            var dto = new RequestDetailsDto
+            {
+                Id = request.Id,
+                State = request.State.GetDisplay(),
+                AuthorName = request.Author.Name,
+                CategoryName = request.Category.Name,
+                ConsumerName = request.ConsumerName,
+                Date = request.Date,
+                Comment = request.Comment,
+                Phone = request.Phone
+            };
+
+            return View(dto);
         }
     }
 }

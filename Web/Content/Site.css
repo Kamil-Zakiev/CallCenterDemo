@@ -112,3 +112,8 @@ div .page-links .selected {
     width: 30px;
     float:left;
 }
+
+.display-label {
+    margin-top: 10px;
+    font-weight: bold;
+}

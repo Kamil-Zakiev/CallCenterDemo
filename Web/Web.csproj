@@ -190,6 +190,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Models\Requests\RequestDetailsDto.cs" />
     <Compile Include="Controllers\UserLoadParams.cs" />
     <Compile Include="Controllers\UserUIController.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
@@ -261,6 +262,7 @@
     <Content Include="Views\UserUI\OperatorPanel.cshtml" />
     <Content Include="Views\UserUI\WorkerPanel.cshtml" />
     <Content Include="Views\UserUI\LogOutLink.cshtml" />
+    <Content Include="Views\Request\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
