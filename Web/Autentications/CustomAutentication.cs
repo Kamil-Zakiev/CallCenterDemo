@@ -3,25 +3,25 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
+using Castle.Core;
+using Core;
 using Domain;
 using Domain.Entities;
 using Domain.Interfaces.Users;
-using NHibernateConfigs;
-using Web.Controllers;
 
 namespace Web.Autentications
 {
-    public class CustomAutentication
+    public class CustomAutentication : IAuthenticationService
     {
+        private const string CookieName = "__AUTH_COOKIE";
+
+        private IPrincipal _currentUser;
         public IPasswordHashService PasswordHashService { get; set; }
 
         public IDataStore<User> UserDataStore { get; set; }
-        
-        private const string CookieName = "__AUTH_COOKIE";
 
+        [DoNotWire]
         public HttpContext HttpContext { get; set; }
-
-        private IPrincipal _currentUser;
 
         public IPrincipal CurrentUserPrincipal
         {
@@ -51,10 +51,11 @@ namespace Web.Autentications
             }
         }
 
-        public User Login(LoginPasswordDto loginPasswordDto)
+        public User Login(LoginPassDto loginPasswordDto)
         {
             var passHash = PasswordHashService.GetHash(loginPasswordDto.Password);
-            var user = UserDataStore.GetAll().SingleOrDefault(u => u.Login == loginPasswordDto.Login && u.PasswordHash == passHash);
+            var user = UserDataStore.GetAll()
+                .SingleOrDefault(u => u.Login == loginPasswordDto.Login && u.PasswordHash == passHash);
 
             if (user != null)
             {
@@ -62,6 +63,15 @@ namespace Web.Autentications
             }
 
             return user;
+        }
+
+        public void LogOut()
+        {
+            var httpCookie = HttpContext.Response.Cookies[CookieName];
+            if (httpCookie != null)
+            {
+                httpCookie.Value = string.Empty;
+            }
         }
 
         private void CreateCookie(User user, bool isPersistent = false)
@@ -83,15 +93,6 @@ namespace Web.Autentications
             };
 
             HttpContext.Response.Cookies.Set(authCookie);
-        }
-
-        public void LogOut()
-        {
-            var httpCookie = HttpContext.Response.Cookies[CookieName];
-            if (httpCookie != null)
-            {
-                httpCookie.Value = string.Empty;
-            }
         }
     }
 }

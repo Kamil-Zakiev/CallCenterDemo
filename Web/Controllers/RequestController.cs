@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 using Domain;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Requests;
 using Domain.Interfaces.Requests.Dto;
-using Web.Autentications;
+using Domain.Interfaces.Users;
 using Web.Autentications.Attributes;
 using Web.Models.Common;
 using Web.Extensions;
@@ -16,7 +15,6 @@ using Web.Models.Requests;
 
 namespace Web.Controllers
 {
-    [OperatorOnly]
     public class RequestController : Controller
     {
         public IDataStore<Category> CategoryDataStore { get; set; }
@@ -25,7 +23,10 @@ namespace Web.Controllers
 
         public IRequestCreationService RequestCreationService { get; set; }
 
+        public ICurrentOperatorService CurrentOperatorService { get; set; }
+
         [HttpGet]
+        [OperatorOnly]
         public ActionResult Create(long? categoryId)
         {
             if (!categoryId.HasValue)
@@ -39,12 +40,12 @@ namespace Web.Controllers
             {
                 CategoryId = cat.Id,
                 CategoryName = cat.Name,
-                // todo wtf
-                AuthorId = ((UserIndentity)((UserProvider)User).Identity).User.Id
+                AuthorId = CurrentOperatorService.GetCurrentUser().Id
             });
         }
 
         [HttpPost]
+        [OperatorOnly]
         public ActionResult Create(NewRequestFormDto requestFormDto)
         {
             if (!ModelState.IsValid)
@@ -56,14 +57,22 @@ namespace Web.Controllers
 
             return Redirect(Url.RouteUrl(new
             {
-                action = "ViewAll"
+                action = "ViewMyRequests"
             }));
         }
 
-        public ActionResult ViewAll(UserLoadParams userLoadParams)
+        [OperatorOnly]
+        public ActionResult ViewMyRequests(UserLoadParams userLoadParams)
+        {
+            var currentUserId = CurrentOperatorService.GetCurrentUser().Id;
+            var reqQuery = RequestDataStore.GetAll().Where(req => req.Author.Id == currentUserId);
+            return ListOfRequests(userLoadParams, reqQuery);
+        }
+
+        private ActionResult ListOfRequests(UserLoadParams userLoadParams, IQueryable<Request> reqQuery)
         {
             // todo: automapper
-            var query = RequestDataStore.GetAll()
+            var query = reqQuery
                 .Select(req => new RequestListItem
                 {
                     Id = req.Id,
@@ -87,19 +96,20 @@ namespace Web.Controllers
                 }
             };
 
-            return View(model);
+            return View("ViewAll", model);
         }
 
+        [CustomAuthorizeFilter(ERole.Admin, ERole.Worker)]
+        public ActionResult ViewAll(UserLoadParams userLoadParams)
+        {
+            var reqQuery = RequestDataStore.GetAll();
+            return ListOfRequests(userLoadParams, reqQuery);
+        }
+
+        [OperatorOnly]
         public ActionResult Edit(long id)
         {
             throw new NotImplementedException();
         }
-    }
-
-    public class UserLoadParams
-    {
-        public int Page { get; set; } = 1;
-
-        public Dictionary<string, string> FilterParams { get; set; }
     }
 }

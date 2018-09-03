@@ -1,8 +1,7 @@
 ﻿using System.Linq;
+using Core;
 using Domain.Entities;
-using Domain.Enums;
 using Domain.Interfaces.Users;
-using NHibernateConfigs;
 
 namespace Domain.Services.Services
 {
@@ -10,22 +9,18 @@ namespace Domain.Services.Services
     {
         public IDataStore<User> UserDataStore { get; set; }
 
+        public IAuthenticationService AuthenticationService { get; set; }
+
         public User GetCurrentUser()
         {
-            var firstUser = UserDataStore.GetAll().FirstOrDefault();
-            if (firstUser == null)
+            var principal = AuthenticationService.CurrentUserPrincipal;
+            if (!principal.Identity.IsAuthenticated)
             {
-                firstUser = new User()
-                {
-                    Login = "test user",
-                    Name = "Test",
-                    PasswordHash = "123",
-                    Role = ERole.Admin
-                };
-                UserDataStore.Save(firstUser);
+                return null;
             }
 
-            return firstUser;
+            var login = principal.Identity.Name;
+            return UserDataStore.GetAll().SingleOrDefault(user => user.Login == login);
         }
     }
 }

@@ -185,12 +185,12 @@
     <Compile Include="Autentications\Attributes\OperatorOnlyAttribute.cs" />
     <Compile Include="Autentications\Attributes\AdminOnlyAttribute.cs" />
     <Compile Include="Autentications\Attributes\CustomAuthorizeFilterAttribute.cs" />
+    <Compile Include="Autentications\AuthorizationService.cs" />
     <Compile Include="Autentications\CustomAutentication.cs" />
-    <Compile Include="Autentications\UserIndentity.cs" />
-    <Compile Include="Autentications\UserProvider.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\UserLoadParams.cs" />
     <Compile Include="Controllers\UserUIController.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Extensions\QuerableExtensions.cs" />
@@ -274,6 +274,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{a1c14659-54ff-4375-94a3-9a54bace67aa}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain.Services\Domain.Services.csproj">
       <Project>{14FA4C8B-9451-413A-9612-890618098256}</Project>
       <Name>Domain.Services</Name>

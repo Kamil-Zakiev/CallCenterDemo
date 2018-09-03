@@ -4,7 +4,6 @@ using Domain.Enums;
 using Domain.Interfaces.Requests;
 using Domain.Interfaces.Requests.Dto;
 using Domain.Interfaces.Users;
-using NHibernateConfigs;
 
 namespace Domain.Services.Services
 {

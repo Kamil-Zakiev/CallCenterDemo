@@ -2,11 +2,13 @@
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.ApplicationServices;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using Core;
 using Domain;
 using Domain.Interfaces.Requests;
 using Domain.Interfaces.Users;
@@ -41,9 +43,11 @@ namespace Web
         {
             Container = new WindsorContainer();
             Container.Register(Component.For<IWindsorContainer>().Instance(Container));
-            Container.Register(Component.For<CustomAutentication>()
+            Container.Register(Component.For<IAuthenticationService>()
                 .ImplementedBy<CustomAutentication>()
                 .LifestylePerWebRequest());
+
+            Container.Register(Component.For<IAuthorizationService>().ImplementedBy<AuthorizationService>().LifestylePerWebRequest());
 
             RegisterControllers();
             RegisterServices();
@@ -65,7 +69,7 @@ namespace Web
             var app = (HttpApplication)source;
             var context = app.Context;
 
-            var customAutentication = Container.Resolve<CustomAutentication>();
+            var customAutentication = Container.Resolve<IAuthenticationService>();
             customAutentication.HttpContext = context;
             context.User = customAutentication.CurrentUserPrincipal;
         }

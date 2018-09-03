@@ -6,7 +6,7 @@ namespace Web.Autentications.Attributes
     {
         public OperatorOnlyAttribute()
         {
-            Role = ERole.Operator;
+            Roles = new[] { ERole.Operator };
         }
     }
 }

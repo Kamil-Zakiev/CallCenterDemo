@@ -1,11 +1,13 @@
 ﻿using System.Web.Mvc;
-using Web.Autentications;
+using Domain.Interfaces.Users;
 
 namespace Web.Controllers
 {
     // ReSharper disable once InconsistentNaming
     public class UserUIController : Controller
     {
+        public ICurrentOperatorService CurrentOperatorService { get; set; }
+
         public ActionResult GetPanel()
         {
             var contextUser = HttpContext.User;
@@ -14,7 +16,7 @@ namespace Web.Controllers
                 return new EmptyResult();
             }
 
-            var user = ((UserIndentity)contextUser.Identity).User;
+            var user = CurrentOperatorService.GetCurrentUser();
             return PartialView(user.Role + "Panel");
         }
 
@@ -26,7 +28,7 @@ namespace Web.Controllers
                 return new EmptyResult();
             }
 
-            var user = ((UserIndentity)contextUser.Identity).User;
+            var user = CurrentOperatorService.GetCurrentUser();
             return PartialView("LogOutLink", user.Name);
         }
     }

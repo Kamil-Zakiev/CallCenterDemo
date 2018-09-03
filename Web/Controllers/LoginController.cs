@@ -1,11 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using Core;
 using Domain;
 using Domain.Entities;
 using Domain.Interfaces.Users;
-using Web.Autentications;
 
 namespace Web.Controllers
 {
@@ -15,8 +14,8 @@ namespace Web.Controllers
 
         public IPasswordHashService PasswordHashService { get; set; }
 
-        public CustomAutentication CustomAutentication { get; set; }
-        
+        public IAuthenticationService CustomAutentication { get; set; }
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -32,7 +31,12 @@ namespace Web.Controllers
                 return View(loginPasswordDto);
             }
 
-            var authedUser = CustomAutentication.Login(loginPasswordDto);
+            var authedUser = CustomAutentication.Login(new LoginPassDto
+            {
+                Login = loginPasswordDto.Login,
+                Password = loginPasswordDto.Password,
+                RememberMe = loginPasswordDto.RememberMe
+            });
             if (authedUser == null)
             {
                 ModelState.AddModelError("",

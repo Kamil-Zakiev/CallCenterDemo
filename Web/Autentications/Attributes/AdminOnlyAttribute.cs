@@ -6,7 +6,7 @@ namespace Web.Autentications.Attributes
     {
         public AdminOnlyAttribute()
         {
-            Role = ERole.Admin;
+            Roles =new [] { ERole.Admin };
         }
     }
 }
