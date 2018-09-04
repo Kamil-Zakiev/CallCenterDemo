@@ -11,6 +11,8 @@ namespace Domain.Entities
 
         public virtual string Comment { get; set; }
 
+        public virtual string WorkerComment { get; set; }
+
         public virtual DateTime Date { get; set; }
 
         public virtual Category Category { get; set; }
@@ -18,5 +20,7 @@ namespace Domain.Entities
         public virtual EState State { get; set; }
 
         public virtual User Author { get; set; }
+
+        public virtual User Executor { get; set; }
     }
 }

@@ -1,3 +1,5 @@
 ﻿<ul class="nav navbar-nav">
-    <li>@Html.ActionLink("Просмотреть все заявки", "ViewAll", "Request")</li>
+    <li>@Html.ActionLink("Доступные заявки", "ViewRequestsToStart", "Request")</li>
+    <li>@Html.ActionLink("Заявки в работе", "ViewRequestsInProgress", "Request")</li>
+    <li>@Html.ActionLink("Обработанные заявки", "ViewFinishedRequests", "Request")</li>
 </ul>

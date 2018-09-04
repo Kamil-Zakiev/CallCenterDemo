@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Domain;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Extensions;
+using Domain.Interfaces.Process;
 using Domain.Interfaces.Requests;
 using Domain.Interfaces.Requests.Dto;
 using Domain.Interfaces.Users;
@@ -25,6 +25,8 @@ namespace Web.Controllers
         public IRequestCreationService RequestCreationService { get; set; }
 
         public ICurrentOperatorService CurrentOperatorService { get; set; }
+
+        public INextStateService NextStateService { get; set; }
 
         [HttpGet]
         [OperatorOnly]
@@ -78,7 +80,9 @@ namespace Web.Controllers
                 {
                     Id = req.Id,
                     CategoryName = req.Category.Name,
-                    CustemerFio = req.ConsumerName
+                    CustemerFio = req.ConsumerName,
+                    Editable = req.State == EState.InProgress || req.State == EState.Registered,
+                    State = req.State
                 })
                 .Filter(userLoadParams);
 
@@ -100,7 +104,7 @@ namespace Web.Controllers
             return View("ViewAll", model);
         }
 
-        [CustomAuthorizeFilter(ERole.Admin, ERole.Worker)]
+        [AdminOnly]
         public ActionResult ViewAll(UserLoadParams userLoadParams)
         {
             var reqQuery = RequestDataStore.GetAll();
@@ -108,12 +112,92 @@ namespace Web.Controllers
         }
 
         [WorkerOnly]
-        public ActionResult Edit(long id)
+        public ActionResult ViewRequestsToStart(UserLoadParams userLoadParams)
         {
-            throw new NotImplementedException();
+            var reqQuery = RequestDataStore.GetAll().Where(req => req.State == EState.Registered);
+            return ListOfRequests(userLoadParams, reqQuery);
         }
 
-        [AllowAnonymous]
+        [WorkerOnly]
+        public ActionResult ViewRequestsInProgress(UserLoadParams userLoadParams)
+        {
+            var userId = CurrentOperatorService.GetCurrentUser().Id;
+            var reqQuery = RequestDataStore.GetAll()
+                .Where(req => req.Executor.Id == userId)
+                .Where(req => req.State == EState.InProgress);
+            return ListOfRequests(userLoadParams, reqQuery);
+        }
+
+        [WorkerOnly]
+        public ActionResult ViewFinishedRequests(UserLoadParams userLoadParams)
+        {
+            var userId = CurrentOperatorService.GetCurrentUser().Id;
+            var reqQuery = RequestDataStore.GetAll()
+                .Where(req => req.Executor.Id == userId)
+                .Where(req => req.State == EState.Done || req.State == EState.NotDone);
+            return ListOfRequests(userLoadParams, reqQuery);
+        }
+
+        [WorkerOnly]
+        public ActionResult Edit(long id)
+        {
+            var request = RequestDataStore.Get(id);
+
+            var nextStates = NextStateService.NextStates(request.State);
+            var dto = new RequestForWorkerDto
+            {
+                Id = request.Id,
+                State = request.State,
+                AuthorName = request.Author.Name,
+                CategoryName = request.Category.Name,
+                ConsumerName = request.ConsumerName,
+                Date = request.Date,
+                Comment = request.Comment,
+                Phone = request.Phone,
+                NextState = nextStates.FirstOrDefault(),
+                NextStates = nextStates,
+                WorkerComment = request.WorkerComment
+            };
+
+            return View(dto);
+        }
+
+        [WorkerOnly]
+        [HttpPost]
+        public ActionResult Edit(RequestForWorkerDto dto)
+        {
+            if (dto.State == EState.InProgress && string.IsNullOrWhiteSpace(dto.WorkerComment))
+            {
+                ModelState.AddModelError(nameof(dto.WorkerComment), $"{CurrentOperatorService.GetCurrentUser().Name}, добавьте, пожалуйста, комментарий.");
+            }
+
+            if (!dto.NextState.HasValue)
+            {
+                ModelState.AddModelError(nameof(dto.NextState), $"{CurrentOperatorService.GetCurrentUser().Name}, выберите следующий статус.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            var request = RequestDataStore.Get(dto.Id);
+
+            request.State = dto.NextState.Value;
+
+            request.WorkerComment = dto.WorkerComment;
+
+            request.Executor = CurrentOperatorService.GetCurrentUser();
+
+            RequestDataStore.Update(request);
+
+            return RedirectToAction("Details", new
+            {
+                id = dto.Id
+            });
+        }
+
+        [AllowAnonymous] //todo: дыра в безопасности?
         public ActionResult Details(long id)
         {
             var request = RequestDataStore.Get(id);
@@ -127,7 +211,8 @@ namespace Web.Controllers
                 ConsumerName = request.ConsumerName,
                 Date = request.Date,
                 Comment = request.Comment,
-                Phone = request.Phone
+                Phone = request.Phone,
+                WorkerComment = request.WorkerComment
             };
 
             return View(dto);

@@ -18,12 +18,12 @@ namespace NHibernateConfigs.Maps
             });
         }
 
-        protected void LazyReferenceTo<TRef>(Expression<Func<T, TRef>> propSelector, string colName) where TRef : class
+        protected void LazyReferenceTo<TRef>(Expression<Func<T, TRef>> propSelector, string colName, bool notNull = true) where TRef : class
         {
             ManyToOne(propSelector, m =>
             {
                 m.Column(colName);
-                m.NotNullable(true);
+                m.NotNullable(notNull);
                 m.Cascade(Cascade.None);
                 m.Fetch(FetchKind.Select);
             });

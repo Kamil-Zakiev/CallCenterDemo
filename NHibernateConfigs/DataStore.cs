@@ -8,18 +8,14 @@ namespace NHibernateConfigs
 {
     public class DataStore<T> : IDataStore<T> where T : PersistingObject
     {
-        private ISession OpenSession()
-        {
-            return SessionFactoryProvider.SessionFactory.OpenSession();
-        }
+        public ISession CurrentSession { get; set; }
 
         public IQueryable<T> GetAll()
         {
             IQueryable<T> queryable;
-            var session = OpenSession();
-            using (var tr = session.BeginTransaction())
+            using (var tr = CurrentSession.BeginTransaction())
             {
-                queryable = session.Query<T>();
+                queryable = CurrentSession.Query<T>();
                 tr.Commit();
             }
 
@@ -29,10 +25,9 @@ namespace NHibernateConfigs
         public T Get(long id)
         {
             T entity = null;
-            var session = OpenSession();
-            using (var tr = session.BeginTransaction())
+            using (var tr = CurrentSession.BeginTransaction())
             {
-                entity = session.Get<T>(id);
+                entity = CurrentSession.Get<T>(id);
                 tr.Commit();
             }
 
@@ -41,30 +36,27 @@ namespace NHibernateConfigs
 
         public void Save(T entity)
         {
-            var session = OpenSession();
-            using (var tr = session.BeginTransaction())
+            using (var tr = CurrentSession.BeginTransaction())
             {
-                session.Save(entity);
+                CurrentSession.Save(entity);
                 tr.Commit();
             }
         }
 
         public void Update(T entity)
         {
-            var session = OpenSession();
-            using (var tr = session.BeginTransaction())
+            using (var tr = CurrentSession.BeginTransaction())
             {
-                session.Update(entity);
+                CurrentSession.Update(entity);
                 tr.Commit();
             }
         }
 
         public void Delete(T entity)
         {
-            var session = OpenSession();
-            using (var tr = session.BeginTransaction())
+            using (var tr = CurrentSession.BeginTransaction())
             {
-                session.Delete(entity);
+                CurrentSession.Delete(entity);
                 tr.Commit();
             }
         }

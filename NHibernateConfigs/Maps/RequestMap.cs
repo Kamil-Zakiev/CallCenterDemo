@@ -17,6 +17,8 @@ namespace NHibernateConfigs.Maps
 
             LazyReferenceTo(req => req.Category, "cat_id");
             LazyReferenceTo(req => req.Author, "user_id");
+            LazyReferenceTo(req => req.Executor, "executor_id", notNull: false);
+            Property(req => req.WorkerComment, m => m.Column("worker_comment"));
         }
     }
 }

@@ -15,6 +15,7 @@ using Domain.Interfaces.Requests;
 using Domain.Interfaces.Users;
 using Domain.Services.Services;
 using Domain.Services.Services.Process;
+using NHibernate;
 using NHibernateConfigs;
 using Web.Autentications;
 using Web.Controllers;
@@ -39,6 +40,9 @@ namespace Web
             InitIoC();
 
             SessionFactoryProvider.InitConfig(ConfigurationManager.AppSettings.Get("ConnectionString"));
+            Container.Register(Component.For<ISession>()
+                .UsingFactoryMethod(() => SessionFactoryProvider.SessionFactory.OpenSession())
+                .LifestylePerWebRequest());
         }
 
         private void InitIoC()
@@ -53,7 +57,7 @@ namespace Web
 
             RegisterControllers();
             RegisterServices();
-
+            
             ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(Container));
         }
 

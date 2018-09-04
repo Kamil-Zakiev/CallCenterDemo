@@ -13,7 +13,7 @@ namespace Web.Extensions
             foreach (var filter in userLoadParams.FilterParams)
             {
                 var paramExpr = Expression.Parameter(typeof(T), "dto");
-                var propertyExpr = Expression.Property(paramExpr, typeof(T), filter.Key.Substring("filter.".Length));
+                var propertyExpr = Expression.Property(paramExpr, typeof(T), filter.Key.Substring("filter.".Length).ToLower());
                 var toLowerExpr = Expression.Call(
                     propertyExpr,
                     typeof(string).GetMethod("ToLower", new Type[] { }));

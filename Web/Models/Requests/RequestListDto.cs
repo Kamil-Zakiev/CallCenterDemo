@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.HtmlControls;
+using Domain.Enums;
 using Web.Controllers;
 using Web.Models.Common;
 
@@ -34,10 +35,14 @@ namespace Web.Models.Requests
         ///     Наименование категории
         /// </summary>
         [Display(Name = "Наименование категории")]
-        [Required]
         public string CategoryName { get; set; }
 
 
         public string Executor { get; set; }
+
+        public EState State { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public bool Editable { get; set; }
     }
 }

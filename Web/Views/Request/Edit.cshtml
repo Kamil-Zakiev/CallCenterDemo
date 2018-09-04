@@ -1,0 +1,117 @@
+﻿@using Domain.Enums
+@using Domain.Extensions
+@model Web.Controllers.RequestForWorkerDto
+
+@{
+    ViewBag.Title = "Выбор заявки на исполнение";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.State)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.State, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Model.State.GetDisplay()
+                @Html.ValidationMessageFor(model => model.State, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AuthorName, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.AuthorName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.AuthorName, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryName, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.CategoryName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.CategoryName, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConsumerName, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ConsumerName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.ConsumerName, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Date, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Date, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Comment, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Phone, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Phone, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        @if (Model.State > EState.Registered)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.WorkerComment, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @if (Model.State == EState.InProgress)
+                    {
+                        @Html.EditorFor(model => model.WorkerComment, new {htmlAttributes = new {@class = "form-control"}})
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.WorkerComment, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    @Html.ValidationMessageFor(model => model.WorkerComment, "", new {@class = "text-danger"})
+                </div>
+            </div>
+        }
+
+        @if (Model.NextStates.Any())
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.NextState, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.NextState, Model.NextStates.Select(x => new SelectListItem
+                    {
+                        Text = x.GetDisplay(),
+                        Value = x.ToString(),
+                        Selected = Model.NextState.HasValue && x == Model.NextState.Value
+                    }))
+                    @Html.ValidationMessageFor(model => model.NextState, "", new {@class = "text-danger"})
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Поменять статус" class="btn btn-default"/>
+            </div>
+        </div>
+    </div>
+}

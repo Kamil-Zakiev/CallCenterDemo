@@ -76,7 +76,6 @@
     <Compile Include="Entities\PersistingObject.cs" />
     <Compile Include="Entities\Request.cs" />
     <Compile Include="Entities\User.cs" />
-    <Compile Include="Entities\WorkDescription.cs" />
     <Compile Include="Enums\EState.cs" />
     <Compile Include="Enums\ERole.cs" />
     <Compile Include="Interfaces\Process\INextStateService.cs" />
